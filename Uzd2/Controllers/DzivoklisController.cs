@@ -30,6 +30,12 @@ namespace Uzd2.Controllers
             return await _dzivService.GetDziv();
         }
 
+        [HttpGet("{houseID}/apartments")]
+        public async Task<ActionResult<IEnumerable<Dzivoklis>>> GetApartmentsFromHouse(int houseID)
+        {
+            return await _dzivService.GetApartmentsFromHouse(houseID);
+        }
+
         // GET: api/Dzivoklis/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Dzivoklis>> GetDzivoklis(long id)

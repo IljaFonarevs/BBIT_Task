@@ -13,6 +13,7 @@ namespace Uzd2.Services
         Task<Dzivoklis> DeleteDziv(long id);
         Task<Dzivoklis> GetDzivById(long id);
         Task<ActionResult<IEnumerable<Dzivoklis>>> GetDziv();
+        Task<ActionResult<IEnumerable<Dzivoklis>>> GetApartmentsFromHouse(int houseID);
         DzivDTO GetDzivDTO(Dzivoklis dziv);
         Dzivoklis GetDzivFromDTO(DzivDTO dzivDTO);
 
@@ -36,6 +37,17 @@ namespace Uzd2.Services
             await _context.SaveChangesAsync();
 
             return iedz;
+        }
+        public async Task<ActionResult<IEnumerable<Dzivoklis>>> GetApartmentsFromHouse(int houseID)
+        {
+            var allAparts = await _context.DzivoklisItems.ToListAsync();
+            List<Dzivoklis> neededAparts = new List<Dzivoklis>();
+
+            allAparts.ForEach(d => { if(d.MajaID == houseID) neededAparts.Add(d); });
+
+            return neededAparts;
+
+
         }
         public async Task<Dzivoklis> UpdateDziv(long id, Dzivoklis iedz)
         {
