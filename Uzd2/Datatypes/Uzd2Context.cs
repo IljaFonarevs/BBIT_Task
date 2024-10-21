@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Uzd2.Datatypes
 {
-    public class Uzd2Context : DbContext
+    public class Uzd2Context : IdentityDbContext<ApplicationUser>
     {
         public Uzd2Context(DbContextOptions<Uzd2Context> options)
             : base(options) 
@@ -12,6 +13,7 @@ namespace Uzd2.Datatypes
         public DbSet<Maja> MajaItems { get; set; } = null!;
         public DbSet<Dzivoklis> DzivoklisItems { get; set; } = null!;
         public DbSet<Iedzivotajs> IedzivotajsItems { get; set; } = null!;
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +33,7 @@ namespace Uzd2.Datatypes
             modelBuilder.Entity<Maja>()
                 .HasMany(m => m.Dzivoklis)
                 .WithOne(d => d.Maja);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
