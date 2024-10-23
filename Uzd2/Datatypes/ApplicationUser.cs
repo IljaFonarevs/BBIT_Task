@@ -11,6 +11,8 @@ namespace Uzd2.Datatypes
         [Key]
         string password { get; set; }
         
+        [Required]
+        public int apartNumber { get; set; }
         
     }
 }

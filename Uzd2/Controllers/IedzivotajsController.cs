@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,12 +25,14 @@ namespace Uzd2.Controllers
 
         // GET: api/Iedzivotajs
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Iedzivotajs>>> GetIedzivotajsItems()
         {
             return await _iedzService.GetIedz();
         }
 
         // GET: api/Iedzivotajs/5
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Iedzivotajs>> GetIedzivotajs(long id)
         {
@@ -39,10 +42,17 @@ namespace Uzd2.Controllers
 
             return Ok(_iedzService.GetIedzDTO(Iedz));
         }
+        [HttpGet("{id}/Iedzivotaji")]
+        [Authorize(Policy = "CorrectApartmentResident",Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<Iedzivotajs>>> GetResidentsFromApartment(int id)
+        {
+            return await _iedzService.GetResidentsFromApart(id);
+        }
 
         // PUT: api/Iedzivotajs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Policy = "CorrectResidentUpdate")]
         public async Task<IActionResult> PutIedzivotajs(long id, IedzDTO iedzDTO)
         {
             var Iedz = _iedzService.GetIedzFromDTO(iedzDTO);
@@ -61,6 +71,7 @@ namespace Uzd2.Controllers
         // POST: api/Iedzivotajs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Iedzivotajs>> PostIedzivotajs(IedzDTO iedzDTO)
         {
             var Iedz = _iedzService.GetIedzFromDTO(iedzDTO);
@@ -73,6 +84,7 @@ namespace Uzd2.Controllers
 
         // DELETE: api/Iedzivotajs/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteIedzivotajs(long id)
         {
             var Iedz = await _iedzService.DeleteIedz(id);

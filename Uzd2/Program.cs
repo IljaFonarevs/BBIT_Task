@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Uzd2;
 using Uzd2.Datatypes;
+using Uzd2.Policies;
 using Uzd2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,11 @@ builder.Services.AddScoped<IDzivService, DzivService>();
 builder.Services.AddScoped<IIedzService, IedzService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ITokenSerivce, TokenService>();
+builder.Services.AddScoped<IAuthorizationHandler, ApartmentNumberHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, ApartmentNumberHandlerHouse>();
+builder.Services.AddScoped<IAuthorizationHandler, ApartmentNumberHandlerResident>();
+builder.Services.AddScoped<IAuthorizationHandler, ApartmentNumberHandlerUpdate>();
+
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<Uzd2Context>()
@@ -35,6 +42,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    
 })
 .AddJwtBearer(options =>
 {
@@ -48,6 +56,13 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
+});
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CorrectApartment", policy => policy.Requirements.Add(new ApartmentNumberRequirment()));
+    options.AddPolicy("CorrectApartmentHouse", policy => policy.Requirements.Add(new ApartmentNumberRequirmentHouse()));
+    options.AddPolicy("CorrectApartmentResident", policy => policy.Requirements.Add(new ApartmentNumberRequirmentResident()));
+    options.AddPolicy("CorrectResidentUpdate", policy => policy.Requirements.Add(new ApartmentNumberRequirmentResidentUpdate()));
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -31,7 +31,7 @@ public class AccountController : ControllerBase
 
 
         var result = await _tokenService.Register(model);
-        if (result == null) return BadRequest();
+        if (result != "User created successfully") return BadRequest(result);
         else return Ok(result);
     }
     

@@ -31,8 +31,9 @@ public class TokenService : ITokenSerivce
     {
         var authClaims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Name, user.UserName),      
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim("ApartmentNumber", user.apartNumber.ToString())
         };
         var roles = await _userManager.GetRolesAsync(user);
         authClaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
@@ -72,7 +73,7 @@ public class TokenService : ITokenSerivce
 
 
 
-        var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
+        var user = new ApplicationUser { UserName = model.Username, Email = model.Email, apartNumber = model.ApartNumber };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (model.Username.Contains("admin")) await _userManager.AddToRoleAsync(user, "Admin");
         else await _userManager.AddToRoleAsync(user, "houseOwner");
@@ -81,6 +82,6 @@ public class TokenService : ITokenSerivce
             return "User created successfully";
         }
         
-        return null;
+        return result.ToString();
     }
 }
