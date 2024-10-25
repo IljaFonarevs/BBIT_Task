@@ -26,7 +26,8 @@ namespace Uzd2.Controllers
 
         // GET: api/Majas
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Maja>>> GetMajaItems()
         {
             return await _majaService.GetMaja();
@@ -34,7 +35,8 @@ namespace Uzd2.Controllers
 
         // GET: api/Majas/5
         [HttpGet("{id}")]
-        [Authorize(Policy = "CorrectApartmentHouse")]
+        //[Authorize(Policy = "CorrectApartmentHouse")]
+        [AllowAnonymous]
         public async Task<ActionResult<MajaDTO>> GetMaja(long id)
         {
             var maja = await _majaService.GetMajaById(id);
@@ -47,7 +49,8 @@ namespace Uzd2.Controllers
         // PUT: api/Majas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> PutMaja(long id, MajaDTO majaDTO)
         {
             var maja = _majaService.GetMajaFromDTO(majaDTO);
@@ -67,7 +70,8 @@ namespace Uzd2.Controllers
         // POST: api/Majas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<ActionResult<Maja>> PostMaja(MajaDTO majaDTO)
         {
             var maja = _majaService.GetMajaFromDTO(majaDTO);
@@ -78,7 +82,7 @@ namespace Uzd2.Controllers
 
         // DELETE: api/Majas/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteMaja(long id)
         {
             var maja = await _majaService.DeleteMaja(id);

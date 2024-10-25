@@ -64,6 +64,12 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CorrectApartmentResident", policy => policy.Requirements.Add(new ApartmentNumberRequirmentResident()));
     options.AddPolicy("CorrectResidentUpdate", policy => policy.Requirements.Add(new ApartmentNumberRequirmentResidentUpdate()));
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+    options.AddPolicy("AllowLocalHost", options => { options.AllowAnyMethod(); options.AllowAnyHeader(); });
+}
+);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -104,6 +110,9 @@ var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 
 await SeedData.SeedRoles(services);
+app.UseCors(options => { options.AllowAnyOrigin(); options.AllowAnyHeader();options.AllowAnyMethod(); });
+app.UseCors("AllowLocalHost");
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

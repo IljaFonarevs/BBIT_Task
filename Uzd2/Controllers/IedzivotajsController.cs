@@ -25,14 +25,16 @@ namespace Uzd2.Controllers
 
         // GET: api/Iedzivotajs
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Iedzivotajs>>> GetIedzivotajsItems()
         {
             return await _iedzService.GetIedz();
         }
 
         // GET: api/Iedzivotajs/5
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Iedzivotajs>> GetIedzivotajs(long id)
         {
@@ -43,7 +45,8 @@ namespace Uzd2.Controllers
             return Ok(_iedzService.GetIedzDTO(Iedz));
         }
         [HttpGet("{id}/Iedzivotaji")]
-        [Authorize(Policy = "CorrectApartmentResident",Roles = "Admin")]
+        //[Authorize(Policy = "CorrectApartmentResident")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Iedzivotajs>>> GetResidentsFromApartment(int id)
         {
             return await _iedzService.GetResidentsFromApart(id);
@@ -52,7 +55,8 @@ namespace Uzd2.Controllers
         // PUT: api/Iedzivotajs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Policy = "CorrectResidentUpdate")]
+        //[Authorize(Policy = "CorrectResidentUpdate")]
+        [AllowAnonymous]
         public async Task<IActionResult> PutIedzivotajs(long id, IedzDTO iedzDTO)
         {
             var Iedz = _iedzService.GetIedzFromDTO(iedzDTO);
@@ -71,7 +75,8 @@ namespace Uzd2.Controllers
         // POST: api/Iedzivotajs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<ActionResult<Iedzivotajs>> PostIedzivotajs(IedzDTO iedzDTO)
         {
             var Iedz = _iedzService.GetIedzFromDTO(iedzDTO);
@@ -84,7 +89,8 @@ namespace Uzd2.Controllers
 
         // DELETE: api/Iedzivotajs/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> DeleteIedzivotajs(long id)
         {
             var Iedz = await _iedzService.DeleteIedz(id);
