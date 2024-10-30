@@ -12,6 +12,7 @@ namespace Uzd2.Services
         Task<Iedzivotajs> UpdateIedz(long id, Iedzivotajs iedz);
         Task<Iedzivotajs> DeleteIedz(long id);
         Task<Iedzivotajs> GetIedzById(long id);
+        Task<ActionResult<IEnumerable<Iedzivotajs>>> GetResidentsFromApart(int id);
         Task<ActionResult<IEnumerable<Iedzivotajs>>> GetIedz();
         IedzDTO GetIedzDTO(Iedzivotajs iedz);
         Iedzivotajs GetIedzFromDTO(IedzDTO iedzDTO);
@@ -58,6 +59,15 @@ namespace Uzd2.Services
                 }
             }
             return iedz;
+        }
+        public async Task<ActionResult<IEnumerable<Iedzivotajs>>> GetResidentsFromApart(int id)
+        {
+            var allIedz = await _context.IedzivotajsItems.ToListAsync();
+            List<Iedzivotajs> neededIedz = new List<Iedzivotajs>();
+
+            allIedz.ForEach(d => { if (d.DzivNumurs == id) neededIedz.Add(d); });
+
+            return neededIedz;
         }
         public async Task<Iedzivotajs> DeleteIedz(long id)
         {

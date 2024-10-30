@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Uzd2.Datatypes;
 
@@ -11,9 +12,11 @@ using Uzd2.Datatypes;
 namespace Uzd2.Migrations
 {
     [DbContext(typeof(Uzd2Context))]
-    partial class Uzd2ContextModelSnapshot : ModelSnapshot
+    [Migration("20241023121114_PolicyTest3")]
+    partial class PolicyTest3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

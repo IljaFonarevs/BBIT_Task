@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace Uzd2.Datatypes
@@ -7,6 +8,7 @@ namespace Uzd2.Datatypes
     public class Maja
     {
         [Key]
+        
         public long MajaNumurs { get; set; }
         [MaxLength(255)]
         public string? Iela { get; set; }
